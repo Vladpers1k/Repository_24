@@ -1,3 +1,34 @@
-<h1>Welcome, <%= user.email %>
-</h1>
-<a href="/logout">Logout</a>
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Захищена сторінка</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <h2>Вітаю, <%= user.email %>!</h2>
+  <p>Ви увійшли до захищеного маршруту.</p>
+
+  <button id="theme-toggle">Змінити тему</button>
+  <a href="/logout">Вийти</a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) body.classList.add(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+        localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark-theme' : '');
+      });
+    });
+  </script>
+</body>
+
+</html>
