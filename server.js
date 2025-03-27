@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const mongoose = require('mongoose')
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
@@ -8,6 +9,16 @@ const protectedRoutes = require('./routes/protectedRoutes')
 require('./config/passport')
 
 const app = express()
+
+// Підключення до MongoDB Atlas
+mongoose
+  .connect(process.env.MONGO_URI)
+
+  .then(() => console.log('✅ Підключено до MongoDB Atlas'))
+  .catch((err) => {
+    console.error('❌ Помилка підключення до MongoDB:', err)
+    process.exit(1)
+  })
 
 app.use(express.static('public'))
 
@@ -41,4 +52,4 @@ app.get('/', (req, res) => {
 app.use('/', authRoutes)
 app.use('/protected', protectedRoutes)
 
-app.listen(3000, () => console.log('Сервер працює на http://localhost:3000'))
+app.listen(3000, () => console.log('🚀 Сервер працює на http://localhost:3000'))

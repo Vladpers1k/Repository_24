@@ -1,5 +1,5 @@
 const express = require('express')
-const { ensureAuthenticated } = require('../config/passport')
+const { ensureAuthenticated } = require('../middlewares/authMiddleware')
 const router = express.Router()
 
 router.get('/', ensureAuthenticated, (req, res) => {
