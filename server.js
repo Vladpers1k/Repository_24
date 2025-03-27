@@ -10,7 +10,6 @@ require('./config/passport')
 
 const app = express()
 
-// Підключення до MongoDB Atlas
 mongoose
   .connect(process.env.MONGO_URI)
 
