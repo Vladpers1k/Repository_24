@@ -24,14 +24,29 @@
         <% } %>
 
           <form action="/register" method="POST">
+            <label>Ім'я:</label>
+            <input type="text" name="firstName" required>
+            <br>
+
+            <label>Прізвище:</label>
+            <input type="text" name="lastName" required>
+            <br>
+
             <label>Email:</label>
             <input type="email" name="email" required>
             <br>
+
             <label>Пароль:</label>
             <input type="password" name="password" required>
             <br>
+
+            <label>Вік:</label>
+            <input type="number" name="age">
+            <br>
+
             <button type="submit">Зареєструватися</button>
           </form>
+
           <p>Вже маєте акаунт? <a href="/login">Увійти</a></p>
 </body>
 

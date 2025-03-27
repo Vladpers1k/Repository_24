@@ -12,8 +12,6 @@
 
 - Passport.js (для авторизації)
 
-- JWT (для автентифікації)
-
 - MongoDB Atlas (для зберігання даних)
 
 - Mongoose (для роботи з MongoDB)

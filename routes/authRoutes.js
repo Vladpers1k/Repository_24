@@ -10,7 +10,7 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body
+  const { firstName, lastName, email, password, age } = req.body
 
   try {
     const existingUser = await User.findOne({ email })
@@ -20,7 +20,14 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-    const newUser = new User({ email, password: hashedPassword })
+
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      age: age ? parseInt(age, 10) : undefined
+    })
 
     await newUser.save()
     req.flash('success', 'Реєстрація успішна! Увійдіть в акаунт.')

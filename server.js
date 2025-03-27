@@ -6,13 +6,13 @@ const passport = require('passport')
 const flash = require('connect-flash')
 const authRoutes = require('./routes/authRoutes')
 const protectedRoutes = require('./routes/protectedRoutes')
+const dataRoutes = require('./routes/dataRoutes')
 require('./config/passport')
 
 const app = express()
 
 mongoose
-  .connect(process.env.MONGO_URI)
-
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('✅ Підключено до MongoDB Atlas'))
   .catch((err) => {
     console.error('❌ Помилка підключення до MongoDB:', err)
@@ -20,7 +20,6 @@ mongoose
   })
 
 app.use(express.static('public'))
-
 app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
 
@@ -43,6 +42,7 @@ app.use((req, res, next) => {
 })
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -50,5 +50,6 @@ app.get('/', (req, res) => {
 
 app.use('/', authRoutes)
 app.use('/protected', protectedRoutes)
+app.use('/data', dataRoutes)
 
 app.listen(3000, () => console.log('🚀 Сервер працює на http://localhost:3000'))
