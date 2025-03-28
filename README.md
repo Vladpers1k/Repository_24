@@ -82,3 +82,37 @@
   Метод: GET
 
 - Опис: Запитує дані з колекції в MongoDB та відображає їх на сторінці.
+
+---
+
+## Нові функціональності
+
+- Створення даних
+  POST /data/add-one — додає один документ.
+  {
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+  }
+- POST /data/add-many — додає кілька документів.
+  [
+  {"name": "Alice", "email": "alice@example.com"},
+  {"name": "Bob", "email": "bob@example.com"}
+  ]
+
+- Оновлення даних
+  PUT /data/update-one/:id — оновлює один документ.
+  {"name": "John Smith"}
+
+- PUT /data/update-many — оновлює кілька документів.
+  {"filter": {"role": "user"}, "update": {"role": "moderator"}}
+
+- PUT /data/replace-one/:id — замінює один документ.
+  {"name": "Jane Doe", "email": "jane.doe@example.com"}
+
+- Видалення даних
+  DELETE /data/delete-one/:id — видаляє один документ.
+  DELETE /data/delete-many — видаляє кілька документів.
+
+- Покращене читання даних
+  GET /data — запит даних з проекцією.
+- GET /data?fields=name,email
