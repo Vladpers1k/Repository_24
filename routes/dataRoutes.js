@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
+const { ensureAuthenticated, validateNewUserData, validateUpdatedUserData } = require('../middlewares/authMiddleware')
 
 router.get('/', async (req, res) => {
   try {
@@ -17,18 +18,17 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/add-one', async (req, res) => {
+router.post('/add-one', ensureAuthenticated, validateNewUserData, async (req, res) => {
   try {
     const newUser = new User(req.body)
     await newUser.save()
     res.status(201).json(newUser)
   } catch (error) {
-    console.error('Error while creating user:', error)
     res.status(400).json({ error: 'Помилка створення користувача' })
   }
 })
 
-router.post('/add-many', async (req, res) => {
+router.post('/add-many', ensureAuthenticated, validateNewUserData, async (req, res) => {
   try {
     const users = await User.insertMany(req.body)
     res.status(201).json(users)
@@ -37,7 +37,7 @@ router.post('/add-many', async (req, res) => {
   }
 })
 
-router.put('/update-one/:id', async (req, res) => {
+router.put('/update-one/:id', ensureAuthenticated, validateUpdatedUserData, async (req, res) => {
   try {
     const updatedUser = await User.updateOne({ _id: req.params.id }, { $set: req.body })
     res.json(updatedUser)
@@ -46,7 +46,7 @@ router.put('/update-one/:id', async (req, res) => {
   }
 })
 
-router.put('/update-many', async (req, res) => {
+router.put('/update-many', ensureAuthenticated, validateUpdatedUserData, async (req, res) => {
   try {
     const updatedUsers = await User.updateMany(req.body.filter, { $set: req.body.update })
     res.json(updatedUsers)
@@ -55,26 +55,16 @@ router.put('/update-many', async (req, res) => {
   }
 })
 
-router.put('/replace-one/:id', async (req, res) => {
-  try {
-    const replacedUser = await User.replaceOne({ _id: req.params.id }, req.body)
-    res.json(replacedUser)
-  } catch (error) {
-    res.status(400).json({ error: 'Помилка заміни користувача' })
-  }
-})
-
-router.delete('/delete-one/:id', async (req, res) => {
+router.delete('/delete-one/:id', ensureAuthenticated, async (req, res) => {
   try {
     const deletedUser = await User.deleteOne({ _id: req.params.id })
     res.json(deletedUser)
   } catch (error) {
-    console.error('Error while deleting user:', error)
     res.status(400).json({ error: 'Помилка видалення користувача' })
   }
 })
 
-router.delete('/delete-many', async (req, res) => {
+router.delete('/delete-many', ensureAuthenticated, async (req, res) => {
   try {
     const deletedUsers = await User.deleteMany(req.body)
     res.json(deletedUsers)
@@ -82,5 +72,5 @@ router.delete('/delete-many', async (req, res) => {
     res.status(400).json({ error: 'Помилка видалення користувачів' })
   }
 })
-// updated
+
 module.exports = router
