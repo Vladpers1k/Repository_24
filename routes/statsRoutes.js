@@ -4,15 +4,19 @@ const User = require('../models/User')
 
 router.get('/users-cursor', async (req, res) => {
   try {
+    res.setHeader('Content-Type', 'application/json')
     const cursor = User.find().cursor()
-    const users = []
+    res.write('[')
+    let first = true
 
     for await (const user of cursor) {
-      users.push(user)
+      if (!first) res.write(',')
+      res.write(JSON.stringify(user))
+      first = false
     }
 
-    console.log('Отримані користувачі:', users)
-    res.json(users)
+    res.write(']')
+    res.end()
   } catch (error) {
     res.status(500).json({ error: 'Помилка отримання користувачів' })
   }
