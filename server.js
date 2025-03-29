@@ -7,6 +7,7 @@ const flash = require('connect-flash')
 const authRoutes = require('./routes/authRoutes')
 const protectedRoutes = require('./routes/protectedRoutes')
 const dataRoutes = require('./routes/dataRoutes')
+const statsRoutes = require('./routes/statsRoutes')
 require('./config/passport')
 
 const app = express()
@@ -51,5 +52,6 @@ app.get('/', (req, res) => {
 app.use('/', authRoutes)
 app.use('/protected', protectedRoutes)
 app.use('/data', dataRoutes)
+app.use('/stats', statsRoutes)
 
 app.listen(3000, () => console.log('🚀 Сервер працює на http://localhost:3000'))
