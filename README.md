@@ -127,6 +127,19 @@
 
 ---
 
+- **PUT /data/replace-one/:id** — замінює один документ за ID.
+
+json
+{
+"firstName": "Jane",
+"lastName": "Doe",
+"email": "jane.doe@example.com",
+"role": "admin",
+"password": "newpassword"
+}
+
+---
+
 - Замінює повністю об'єкт користувача за вказаним ID.
 
 - GET /data/replace-one/:id
