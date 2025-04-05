@@ -7,14 +7,16 @@ module.exports.ensureAuthenticated = (req, res, next) => {
 }
 
 const createUserSchema = Joi.object({
-  name: Joi.string().min(3).max(50).required(),
+  firstName: Joi.string().min(3).max(50).required(),
+  lastName: Joi.string().min(3).max(50).required(),
   email: Joi.string().email().required(),
   role: Joi.string().valid('user', 'admin', 'moderator').optional(),
   password: Joi.string().min(6).max(30).required()
 })
 
 const updateUserSchema = Joi.object({
-  name: Joi.string().min(3).max(50).optional(),
+  firstName: Joi.string().min(3).max(50).optional(),
+  lastName: Joi.string().min(3).max(50).optional(),
   email: Joi.string().email().optional(),
   role: Joi.string().valid('user', 'admin', 'moderator').optional(),
   password: Joi.string().min(6).max(30).optional()
@@ -35,3 +37,20 @@ module.exports.validateUpdatedUserData = (req, res, next) => {
   }
   next()
 }
+
+const validateNewUserArrayData = (req, res, next) => {
+  const arrayErrors = []
+  req.body.forEach((userData, index) => {
+    const { error } = createUserSchema.validate(userData)
+    if (error) {
+      arrayErrors.push({ index, message: error.details[0].message })
+    }
+  })
+
+  if (arrayErrors.length) {
+    return res.status(400).json({ errors: arrayErrors })
+  }
+  next()
+}
+
+module.exports.validateNewUserArrayData = validateNewUserArrayData

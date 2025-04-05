@@ -28,7 +28,7 @@ router.post('/add-one', ensureAuthenticated, validateNewUserData, async (req, re
   }
 })
 
-router.post('/add-many', ensureAuthenticated, validateNewUserData, async (req, res) => {
+router.post('/add-many', ensureAuthenticated, validateNewUserArrayData, async (req, res) => {
   try {
     const users = await User.insertMany(req.body)
     res.status(201).json(users)
@@ -61,6 +61,15 @@ router.delete('/delete-one/:id', ensureAuthenticated, async (req, res) => {
     res.json(deletedUser)
   } catch (error) {
     res.status(400).json({ error: 'Помилка видалення користувача' })
+  }
+})
+
+router.put('/replace-one/:id', ensureAuthenticated, validateNewUserData, async (req, res) => {
+  try {
+    const replacedUser = await User.replaceOne({ _id: req.params.id }, req.body)
+    res.json(replacedUser)
+  } catch (error) {
+    res.status(400).json({ error: 'Помилка заміни користувача' })
   }
 })
 
