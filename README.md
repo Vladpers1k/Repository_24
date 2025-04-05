@@ -142,7 +142,7 @@ json
 
 - Замінює повністю об'єкт користувача за вказаним ID.
 
-- GET /data/replace-one/:id
+- PUT /data/replace-one/:id
 
 ---
 
